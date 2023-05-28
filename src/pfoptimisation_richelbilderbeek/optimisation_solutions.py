@@ -1,222 +1,187 @@
-"""Easy general-purpose functions.
+"""The functions from The Medium Project."""
+from random import seed, shuffle
+from time import time
 
-'Easy' means:
- * a cyclomatic complexity of 1 to 4
- * no for-loops
- * maximally one variable modified
+from pandas import DataFrame
+
+"""
+These are all the solution functions for sorting.
+
+This includes doing a speed measurement.
 """
 
-def are_numbers(x):
-    """Determine if `x` is one or more numbers.
+def are_functions(fs):
+    """Determine if `fs` is one or more functions.
 
-    Numbers can be integer or floating point.
-
-    Returns `True` if `x` is one or more numbers.
+    Returns `True` if `f` is one or more functions.
     """
-    if not isinstance(x, list):
+    if (not is_list(fs)):
         return False
-    if len(x) == 0:
+    if (len(fs) == 0):
         return False
-    return all(is_number(e) for e in x)
+    return all(is_function(fs[i]) for i in range(len(fs)))
 
-def are_strings(x):
-    """Determine if `x` is one or more strings.
+def are_speed_measurements(x):
+    """Determine if `x` is a table of speed measurements.
 
-    Returns `True` if `x` is one or more strings.
+    The table of speed measurements must be a dictionary.
+
+    Its three expected keys are:
+     * `function_name`
+     * `data_length`
+     * `runtime_speed_secs`
+
+    Each key element is a list.
+    These three lists have an equal length.
+
+    Returns `True` if `x` is a table of speed measurements.
     """
-    if not isinstance(x, list):
+    if not isinstance(x, dict):
         return False
-    if len(x) == 0:
+    num_cols = 3
+    if (len(x) != num_cols):
         return False
-    return all(is_string(e) for e in x)
+    these_keys = list(x.keys())
+    expected_keys = ["function_name", "data_length", "runtime_speed_secs"]
+    if (these_keys != expected_keys):
+        return False
+    if (len(x["function_name"]) != len(x["data_length"])):
+        return False
+    if (len(x["function_name"]) != len(x["runtime_speed_secs"])):
+        return False
+    return True
 
-def check_are_numbers(x):
-    """Determine if `x` is one or more numbers.
+def get_datas(rng_seed = 42, data_lengths = [9, 99, 999]):
+    """Get a list of datasets (hence, the reduplicated/Gollumese plural).
 
-    If `x` is not one or more numbers, a `RuntimeError` is raised.
-
-    Returns nothing.
+    Each dataset is list of numbers,
+    which can be used to illustrate sorting algorithms.
     """
-    if not are_numbers(x):
-        msg = "'x' must be numbers. "
-        raise RuntimeError(
-            msg,
-            "Actual value of 'x': ", x,
-        )
+    seed(rng_seed)
+    datas = []
+    for data_length in data_lengths:
+        data = [x * x for x in range(0, data_length)]
+        shuffle(data)
+        datas.append(data)
+    return datas
 
+def get_sorting_functions():
+    """Get a list with all the sorting functions.
 
-def check_different(a, b):
-    """Determine if `a` and `b` are different.
-
-    Raises `RuntimeError` when not.
-
-    Returns nothing.
+    Each sorting function is a pure function
+    that takes 1 argument
+    and returns the sorted argument
     """
-    if a == b:
-        msg = "'a' and 'b' must be different. "
-        raise RuntimeError(
-            msg,
-            "Value of 'a': ", a,
-        )
+    return [silly_sort, stupid_sort]
 
-def check_equal(a, b):
-    """Determine if `a` and `b` are equal.
+def get_speed_measurements(functions, datas):
+    """Measure how long the runtime is of each function per each data.
 
-    Raises `RuntimeError` when not.
+    param functions functions: two or more functions
+        that can work on an element of `datas`
+    param list datas: one or more sets of data (hence, the
+        reduplicated/Gollumese plural)
 
-    Returns nothing.
+    Returns a dict with three columns:
+      1. The function index (first function has index zero)
+      2. The data index (first data has index zero)
+      3. The time in seconds the function took to process the data
     """
-    if a != b:
-        msg = "'a' and 'b' must be equal. "
-        raise RuntimeError(
-            msg,
-            "Value of 'a': ", a, ". ",
-            "Value of 'b': ", b,
-        )
+    speed_measurements = {
+        "function_name": [],
+        "data_length": [],
+        "runtime_speed_secs": [],
+    }
+    for f in functions:
+        for data in datas:
+            speed_measurements["data_length"].append(len(data))
+            speed_measurements["function_name"].append(f.__name__)
+            start = time()
+            f(data)
+            end = time()
+            t = end - start
+            speed_measurements["runtime_speed_secs"].append(t)
 
-def check_is_number(x):
-    """Determine if `x` is a number.
+    return speed_measurements
 
-    If `x` is not a number, a `RuntimeError` is raised.
+def get_test_datas(rng_seed = 42):
+    """Get a list of datasets (hence, the reduplicated/Gollumese plural).
 
-    Returns nothing.
+    Each dataset is list of numbers,
+    which can be used to illustrate sorting algorithms.
     """
-    if not is_number(x):
-        msg = "'x' must be a number. "
-        raise RuntimeError(
-            msg,
-            "Actual value of 'x': ", x,
-        )
+    return get_datas(rng_seed = rng_seed, data_lengths = [2, 3, 4])
 
-def check_is_probability(x):
-    """Determine if `x` is a probability.
+def get_test_speed_measurements():
+    """Return a collection of speed measurements, to be used in tests."""
+    return {
+        "function_name": ["silly_sort", "stupid_sort"],
+        "data_length": [0, 1],
+        "runtime_speed_secs": [0.1, 0.2],
+    }
 
-    If `x` is not a probability, a `RuntimeError` is raised.
+def is_dict(x):
+    """Determine if `x` is a dict.
 
-    Returns nothing.
+    Returns `True` if `x` is a dict.
     """
-    check_is_number(x)
-    if not is_probability(x):
-        msg = "'x' must be a probability. "
-        raise RuntimeError(
-            msg,
-            "Actual value of 'x': ", x,
-        )
+    return type(x) == dict
 
-def check_is_string(x):
-    """Determine if `x` is a string.
+def is_function(f):
+    """Determine if `f` is a function.
 
-    If `x` is not a string, a `RuntimeError` is raised.
-
-    Returns nothing.
+    Returns `True` if `f` is a function.
     """
-    if not is_string(x):
-        msg = "'x' must be a string. "
-        raise RuntimeError(
-            msg,
-            "Actual value of 'x': ", x,
-        )
+    return callable(f)
 
-def divide_safely(a, b):
-    """Divide `a` by `b`.
+def is_list(x):
+    """Determine if `x` is a list.
 
-    If `a` or `b` are not a floating point number, a `TypeError` is raised.
-    If `b` is `0.0`, a `RuntimeError` is raised.
-
-    Returns `a` divided by `b`
+    Returns `True` if `x` is a list.
     """
-    zero = 0.0
-    if b == zero:
-        msg = "'b' must not be zero"
-        raise RuntimeError(
-            msg,
-        )
-    return a / b
+    return type(x) == list
 
-def is_dividable_by_three(x):
-    """Determine if `x` is dividable by three.
+def is_sorted(data):
+    """Determine if `data` is sorted.
 
-    If `x` is not an integer number, a `TypeError` is raised.
-
-    Returns `True` if `x` is dividable by three
+    Returns `True` if the data is sorted.
     """
-    if not isinstance(x, int):
-        msg = "'number' must be a number. Actual type of 'number': "
-        raise TypeError(
-            msg, type(x),
-        )
-    return x % 3 == 0
+    return data == sorted(data)
 
-def is_even(x):
-    """Determine if `x` is even.
+def save_dict(x, csv_filename):
+    """Save the dictionary `x` to a file named `csv_filename`."""
+    # should fail in debug mode only
+    assert is_dict(x)
+    data_frame = DataFrame.from_dict(x)
+    data_frame.to_csv(csv_filename, index = False)
+    pass
 
-    If `x` is not an integer number, a `TypeError` is raised.
+def save_speed_measurements(speed_measurements, csv_filename):
+    """Save the `speed_measurements` to a file named `csv_filename`."""
+    # should fail in debug mode only
+    assert are_speed_measurements(speed_measurements)
+    save_dict(
+        x = speed_measurements,
+        csv_filename = csv_filename,
+    )
 
-    Returns `True` if `x` is even
+def silly_sort(data):
+    """Sorts `data` in a silly way.
+
+    Returns the `data` after sorting it.
     """
-    if not isinstance(x, int):
-        msg = "'number' must be a number. Actual type of 'number': "
-        raise TypeError(
-            msg, type(x),
-        )
-    return x % 2 == 0
+    sorted_data = stupid_sort(data)
 
-def is_number(x):
-    """Determine if `x` is one number.
+    # Just to be super sure it is sorted :-)
+    return sorted(sorted_data)
 
-    Determine if `x` is one number,
-    for example, '42' or '3.14.
+def stupid_sort(data):
+    """Sorts `data` in a stupid way.
 
-    Returns `True` if `x` is one number
+    Returns the `data` after sorting it.
     """
-    return isinstance(x, (int, float) )
+    while True:
+        if (is_sorted(data)):
+            return data
+        shuffle(data)
 
-def is_odd(x):
-    """Determine if `x` is odd.
-
-    If `x` is not an integer number, a `TypeError` is raised.
-
-    Returns `True` if `x` is odd
-    """
-    return not is_even(x)
-
-def is_probability(x):
-    """Determine if `x` is a probability.
-
-    Determine if `x` is a probability,
-    i.e. a value between 0.0 and 1.0, including both 0.0 and 1.0.
-    If `x` is not a floating point number, a `TypeError` is raised.
-
-    Returns `True` if `x` is a probability
-    """
-    if not isinstance(x, float):
-        msg = "'number' must be a floating point number. "
-        raise TypeError(
-            msg,
-            "Actual type of 'number': ", type(x),
-        )
-    min_probability = 0.0
-    max_probability = 1.0
-    return x >= min_probability and x <= max_probability
-
-def is_string(x):
-    """Determine if `x` is one string.
-
-    Returns `True` if `x` one string
-    """
-    return isinstance(x, str)
-
-def is_zero(x):
-    """Determine if `x` is zero.
-
-    If `x` is not a number, a `TypeError` is raised.
-
-    Returns `True` if `x` is zero
-    """
-    if not isinstance(x, (int, float)):
-        msg = "'number' must be a number. "
-        raise TypeError(
-            msg,
-            "Actual type of 'number': ", type(x),
-        )
-    return x == 0

@@ -1,10 +1,10 @@
-"""The Medium Project.
+"""Optimisation.
 
-Medium-sized project uses in the UPPMAX Programming Formalisms course.
+Lesson 'Optimisation' of the UPPMAX 'Programming Formalisms' course.
 """
 import cProfile
 
-from src.pfmp_richelbilderbeek.medium_solutions import (
+from src.pfoptimisation_richelbilderbeek.optimisation_solutions import (
     get_datas,
     get_sorting_functions,
     get_speed_measurements,

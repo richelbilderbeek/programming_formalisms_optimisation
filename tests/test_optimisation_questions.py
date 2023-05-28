@@ -6,7 +6,7 @@ from src.pfoptimisation_richelbilderbeek.optimisation_questions import (
 )
 
 
-class TestEasySolutions(unittest.TestCase):
+class TestOptimisationQuestions(unittest.TestCase):
 
     """Class to test the functions in optimisation_questions.py."""
 
