@@ -1,37 +1,10 @@
-"""Easy general-purpose functions.
+"""Questions for the 'Optimisation' lesson."""
 
-'Easy' means:
- * a cyclomatic complexity of 1 to 4
- * no for-loops
- * maximally one variable modified
 
-0: `is_zero(x)`
-1: `is_even(x)`
-2: `is_odd(x)`
-3: `is_probability(p)`
-4: `is_number(x)`
-5: `are_numbers(x)`
-S1: `is_roman_number(x)`
-"""
 
-"""Example function: `is_zero(x)`."""
+"""Exercise 1: measure the big-O complexity
 
-def is_zero(x):
-    """Determine if `x` is zero.
-
-    If `x` is not a number, a `TypeError` is raised.
-
-    Returns `True` if `x` is zero
-    """
-    if not isinstance(x, (int, float)):
-        msg = "'number' must be a number. "
-        raise TypeError(
-            msg,
-            "Actual type of 'number': ", type(x),
-        )
-    return x == 0
-
-"""Exercise 1: develop the function 'is_even'.
+https://www.pythonpool.com/check-if-number-is-prime-in-python/
 
 In this context, 'even', means 'dividable by two', e.g. 2, 4, -6, 0.
 
