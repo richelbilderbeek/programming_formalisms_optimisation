@@ -2,15 +2,12 @@
 
 
 
-"""Exercise 1: measure the big-O complexity
-
+"""Exercise 1: measure the big-O complexity of the isprime function from:
 https://www.pythonpool.com/check-if-number-is-prime-in-python/
 
-In this context, 'even', means 'dividable by two', e.g. 2, 4, -6, 0.
+ * Predict the big-O
+ * Measure the big-O
 
--   Create a GitHub repository called `is_even`
--   Develop a function called `is_even`
--   Try to be **exemplary**
 """
 
 """Exercise 2: develop the function 'is_odd'

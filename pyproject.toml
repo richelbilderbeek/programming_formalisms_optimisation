@@ -24,4 +24,12 @@ classifiers = [
 [tool.ruff]
     select = ["ALL"]
     ignore = ["ANN", "PT", "PTH", "D211", "D213", "S101", "B006"]
+    exclude = ["lekberg.py", "pythonpool.py", "test_lekberg.py"]
+
+
+
+
+
+
+
 
