@@ -1,14 +1,14 @@
-"""Tests all function in src.pfmp_richelbilderbeek.easy_questions."""
+"""Tests all function in src.pfmp_richelbilderbeek.optimisation_questions."""
 import unittest
 
-from pfmp_richelbilderbeek.tdd_questions import (
+from src.pfoptimisation_richelbilderbeek.optimisation_questions import (
     is_zero,
 )
 
 
 class TestEasySolutions(unittest.TestCase):
 
-    """Class to test the functions in src.pfmp_richelbilderbeek.easy_questions."""
+    """Class to test the functions in optimisation_questions.py."""
 
     def test_is_zero(self):
         """Test 'is_zero'."""
