@@ -60,7 +60,7 @@ def get_datas(rng_seed = 42, data_lengths = [9, 99, 999]):
     seed(rng_seed)
     datas = []
     for data_length in data_lengths:
-        data = [x * x for x in range(0, data_length)]
+        data = [x * x for x in range(data_length)]
         shuffle(data)
         datas.append(data)
     return datas
@@ -125,7 +125,7 @@ def is_dict(x):
 
     Returns `True` if `x` is a dict.
     """
-    
+
     return isinstance(x, dict)
 
 def is_function(f):
