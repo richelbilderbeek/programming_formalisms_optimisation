@@ -125,7 +125,8 @@ def is_dict(x):
 
     Returns `True` if `x` is a dict.
     """
-    return type(x) == dict
+    
+    return isinstance(x, dict)
 
 def is_function(f):
     """Determine if `f` is a function.
@@ -139,7 +140,7 @@ def is_list(x):
 
     Returns `True` if `x` is a list.
     """
-    return type(x) == list
+    return isinstance(x, list)
 
 def is_sorted(data):
     """Determine if `data` is sorted.
@@ -154,7 +155,6 @@ def save_dict(x, csv_filename):
     assert is_dict(x)
     data_frame = DataFrame.from_dict(x)
     data_frame.to_csv(csv_filename, index = False)
-    pass
 
 def save_speed_measurements(speed_measurements, csv_filename):
     """Save the `speed_measurements` to a file named `csv_filename`."""

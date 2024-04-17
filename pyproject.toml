@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pfoptimisation_richelbilderbeek"
-version = "0.0.1"
+version = "0.0.2"
 authors = [
   { name="Richèl Bilderbeek", email="richel@richelbilderbeek.nl" },
 ]
@@ -22,14 +22,6 @@ classifiers = [
 "Bug Tracker" = "https://github.com/richelbilderbeek/programming_formalisms_optimisation/issues"
 
 [tool.ruff]
-    select = ["ALL"]
-    ignore = ["ANN", "PT", "PTH", "D211", "D213", "S101", "B006"]
+    lint.select = ["ALL"]
+    lint.ignore = ["ANN", "PT", "PTH", "D211", "D213", "S101", "B006"]
     exclude = ["lekberg.py", "pythonpool.py", "test_lekberg.py"]
-
-
-
-
-
-
-
-
