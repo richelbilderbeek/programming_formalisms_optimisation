@@ -125,7 +125,6 @@ def is_dict(x):
 
     Returns `True` if `x` is a dict.
     """
-
     return isinstance(x, dict)
 
 def is_function(f):
